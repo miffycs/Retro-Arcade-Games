@@ -2,11 +2,9 @@ package frogger;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -24,20 +22,16 @@ public abstract class World extends Pane {
             @Override
             public void changed(ObservableValue<? extends Scene> observable, Scene oldValue, Scene newValue) {
                 if (newValue != null) {
-                    newValue.setOnKeyReleased(new EventHandler<KeyEvent>() {
-                        @Override
-                        public void handle(KeyEvent event) {
-                            if (getOnKeyReleased() != null) {
-                                getOnKeyReleased().handle(event);
-                            }
-                            List<Actor> myActors = getObjects(Actor.class);
-                            for (Actor anActor : myActors) {
-                                if (anActor.getOnKeyReleased() != null) {
-                                    anActor.getOnKeyReleased().handle(event);
-                                }
+                    newValue.setOnKeyReleased((KeyEvent event) -> {
+                        if (getOnKeyReleased() != null) {
+                            getOnKeyReleased().handle(event);
+                        }
+                        List<Actor> myActors = getObjects(Actor.class);
+                        for (Actor anActor : myActors) {
+                            if (anActor.getOnKeyReleased() != null) {
+                                anActor.getOnKeyReleased().handle(event);
                             }
                         }
-
                     });
                     newValue.setOnKeyPressed((KeyEvent event) -> {
                         if (getOnKeyPressed() != null) {
