@@ -18,6 +18,7 @@ import javax.swing.table.JTableHeader;
 
 public class HowToPlay extends JFrame {
 
+    // variables
     private GroupLayout layout;
     private JLabel title;
     private JLabel desc;
@@ -26,6 +27,7 @@ public class HowToPlay extends JFrame {
     private JScrollPane scrollPane;
     private JButton back;
 
+    // constructor
     public HowToPlay() {
         initComponents();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -35,12 +37,14 @@ public class HowToPlay extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    // initialize components
     private void initComponents() {
         initLabels();
         initButtons();
         initLayout();
     }
 
+    // set labels
     private void initLabels() {
         title = new JLabel("How To Play");
         title.setFont(new Font("Lucida Grande", Font.BOLD, 30));
@@ -82,6 +86,7 @@ public class HowToPlay extends JFrame {
         scrollPane.setPreferredSize(new Dimension(200, 100));
     }
 
+    // set buttons
     private void initButtons() {
         back = new JButton("Back");
         back.addActionListener((ActionEvent evt) -> {
@@ -89,10 +94,9 @@ public class HowToPlay extends JFrame {
         });
     }
 
+    // set layout
     private void initLayout() {
-
         layout = new GroupLayout(getContentPane());
-
         layout.setHorizontalGroup(
                 layout.createParallelGroup(Alignment.CENTER)
                 .addGap(600)
@@ -117,13 +121,14 @@ public class HowToPlay extends JFrame {
                         .addComponent(back)
                         .addGap(30))
         );
-
     }
 
+    // exit application
     private void exitActionPerformed(ActionEvent evt) {
         this.dispose();
     }
 
+    // run application
     public static void main(String args[]) {
         EventQueue.invokeLater(() -> {
             new HowToPlay().setVisible(true);

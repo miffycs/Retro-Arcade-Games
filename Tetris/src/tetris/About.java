@@ -13,6 +13,7 @@ import javax.swing.WindowConstants;
 
 public class About extends JFrame {
 
+    // variables
     private GroupLayout layout;
     private JLabel projectTitle;
     private JLabel projectID;
@@ -20,6 +21,7 @@ public class About extends JFrame {
     private JLabel author;
     private JButton exit;
 
+    // constructor
     public About() {
         initComponents();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -29,12 +31,14 @@ public class About extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    // initialize components
     private void initComponents() {
         initLabels();
         initButtons();
         initLayout();
     }
 
+    // set labels
     private void initLabels() {
         projectTitle = new JLabel("Tetris");
         projectTitle.setFont(new Font("Lucida Grande", Font.BOLD, 30));
@@ -46,12 +50,12 @@ public class About extends JFrame {
         author.setFont(new Font("Lucida Grande", Font.BOLD, 20));
     }
 
+    // set buttons
     private void initButtons() {
         exit = new JButton("Exit");
         exit.addActionListener((ActionEvent evt) -> {
             exitActionPerformed(evt);
         });
-        // non-lambda
         /*
         exit.addActionListener(new ActionListener() {
             @Override
@@ -62,6 +66,7 @@ public class About extends JFrame {
         */
     }
 
+    // set layout
     private void initLayout() {
         layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -71,7 +76,8 @@ public class About extends JFrame {
                         .addGroup(layout.createSequentialGroup().addComponent(projectID))
                         .addGroup(layout.createSequentialGroup().addComponent(className))
                         .addGroup(layout.createSequentialGroup().addComponent(author))
-                        .addGroup(layout.createSequentialGroup().addComponent(exit)));
+                        .addGroup(layout.createSequentialGroup().addComponent(exit))
+        );
         layout.setVerticalGroup(
                 layout.createParallelGroup(Alignment.CENTER)
                         .addGroup(layout.createSequentialGroup().addGap(30)
@@ -79,19 +85,20 @@ public class About extends JFrame {
                                 .addComponent(projectID).addGap(20)
                                 .addComponent(className).addGap(20)
                                 .addComponent(author).addGap(20)
-                                .addComponent(exit).addGap(30)));
+                                .addComponent(exit).addGap(30))
+        );
     }
 
+    // exit application
     private void exitActionPerformed(ActionEvent evt) {
         this.dispose();
     }
 
+    // run application
     public static void main(String args[]) {
         EventQueue.invokeLater(() -> {
             new About().setVisible(true);
         });
-        
-        // non-lambda
         /*
         EventQueue.invokeLater(new Runnable() {
             @Override
