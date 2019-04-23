@@ -5,7 +5,6 @@ import java.awt.Color;
 public enum Tetrominoes {
     
     // No shape
-// No shape
     NoShape(new int[][]{{0, 0}, {0, 0}, {0, 0}, {0, 0}},
             new Color(0, 0, 0)),
     // I = cyan
