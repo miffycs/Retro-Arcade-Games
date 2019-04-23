@@ -2,11 +2,13 @@ package frogger;
 
 import frogger.enums.Img;
 import frogger.enums.Obstacle;
+import java.util.Optional;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -14,6 +16,7 @@ public class Main extends Application {
     private AnimationTimer timer;
     private GameStage gamestage;
     private Frog player;
+    private String playerName = "Anonymous";
 
     public static void main(String[] args) {
         launch(args);
@@ -44,6 +47,18 @@ public class Main extends Application {
         this.gameStart();
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        // ask player for name
+        this.askPlayerName();
+    }
+    
+    private void askPlayerName() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Player Name");
+        dialog.setHeaderText("Please enter your name:");
+        dialog.setContentText("Name:");
+        Optional<String> result = dialog.showAndWait();
+        this.playerName = result.get();
     }
 
     public void gameStart() {
@@ -67,8 +82,9 @@ public class Main extends Application {
                     
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("You Won!");
-                    alert.setHeaderText("Your score is: " + player.getScore() + "!");
-                    alert.setContentText("Highest possible score: 800");
+                    alert.setHeaderText("Score for " + playerName + ":");
+                    alert.setContentText("Your score is: " + player.getScore() + "\n"
+                            + "(Highest possible score: 800)");
                     alert.show();
                 }
             }
