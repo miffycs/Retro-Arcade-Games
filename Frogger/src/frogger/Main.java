@@ -13,15 +13,18 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    // variables
     private AnimationTimer timer;
     private GameStage gamestage;
     private Frog player;
-    private String playerName = "Anonymous";
+    private String playerName;
 
+    // main method
     public static void main(String[] args) {
         launch(args);
     }
-
+    
+    // start the game
     @Override
     public void start(Stage primaryStage) {
 
@@ -52,37 +55,51 @@ public class Main extends Application {
         this.askPlayerName();
     }
     
+    // asks player for their name to show when game ends
     private void askPlayerName() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Player Name");
         dialog.setHeaderText("Please enter your name:");
         dialog.setContentText("Name:");
         Optional<String> result = dialog.showAndWait();
-        this.playerName = result.get();
-    }
-
-    public void gameStart() {
-        this.gamestage.start();
-        this.createTimer();
-        this.timer.start();
-        this.gamestage.playMusic();
+        
+        // if result caught something && result is not empty
+        result.ifPresent(name -> {
+            if (!result.equals("")) {
+                this.playerName = result.get();
+            } else {
+                this.playerName = "Anon Player";
+            }
+        });
     }
     
+    // start the game: world & timer & music
+    public void gameStart() {
+        this.gamestage.start();
+        this.gamestage.playMusic();
+        this.createTimer();
+        this.timer.start();
+    }
+    
+    // create a new AnimationTimer
     private void createTimer() {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                // if scoreChanged, set score in World to new score
                 if (player.scoreChanged()) {
                     setScore(player.getScore());
                 }
+                // if gameFinished (5 Frogs in End), end game
                 if (player.isGameFinished()) {
                     gamestage.stopMusic();
                     timer.stop();
                     gamestage.stop();
                     
+                    // show game results
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("You Won!");
-                    alert.setHeaderText("Score for " + playerName + ":");
+                    alert.setHeaderText("Score for " + playerName);
                     alert.setContentText("Your score is: " + player.getScore() + "\n"
                             + "(Highest possible score: 800)");
                     alert.show();
@@ -91,12 +108,15 @@ public class Main extends Application {
         };
     }
     
+    // reset the score to 000
     private void resetScore() {
         gamestage.add(Img.DIGITS.img(0), 500, 30);
         gamestage.add(Img.DIGITS.img(0), 500-30, 30);
         gamestage.add(Img.DIGITS.img(0), 500-30-30, 30);
     }
-
+    
+    // set score in World to current score,
+    // starting with right most digit
     private void setScore(int n) {
         this.resetScore();
         int shift = 0;
@@ -109,9 +129,8 @@ public class Main extends Application {
         }
     }
     
+    // reset the End slots to all empty
     private void resetEnd() {
-        // TODO find a better way to add endslots
-        // List<End> endSlots = new ArrayList<End>(5);
         gamestage.add(new End( 13, 96));
         gamestage.add(new End(141, 96));
         gamestage.add(new End(270, 96));
@@ -119,6 +138,7 @@ public class Main extends Application {
         gamestage.add(new End(527, 96));
     }
     
+    // reset all obstacles: Car, Log, Turtle
     private void resetObstacles() {
         // logs top
         gamestage.add(new Log(Obstacle.LOG_SHORT, 0, 166, 0.75));
