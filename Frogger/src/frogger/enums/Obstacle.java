@@ -1,7 +1,7 @@
 package frogger.enums;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+//import javafx.scene.image.ImageView;
 
 public enum Obstacle {
     

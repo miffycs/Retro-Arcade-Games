@@ -19,14 +19,12 @@ public abstract class World extends Pane {
     private AnimationTimer timer;
 
     public World() {
-
         sceneProperty().addListener(new ChangeListener<Scene>() {
 
             @Override
             public void changed(ObservableValue<? extends Scene> observable, Scene oldValue, Scene newValue) {
                 if (newValue != null) {
                     newValue.setOnKeyReleased(new EventHandler<KeyEvent>() {
-
                         @Override
                         public void handle(KeyEvent event) {
                             if (getOnKeyReleased() != null) {
@@ -41,27 +39,19 @@ public abstract class World extends Pane {
                         }
 
                     });
-
-                    newValue.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-                        @Override
-                        public void handle(KeyEvent event) {
-                            if (getOnKeyPressed() != null) {
-                                getOnKeyPressed().handle(event);
-                            }
-                            List<Actor> myActors = getObjects(Actor.class);
-                            for (Actor anActor : myActors) {
-                                if (anActor.getOnKeyPressed() != null) {
-                                    anActor.getOnKeyPressed().handle(event);
-                                }
+                    newValue.setOnKeyPressed((KeyEvent event) -> {
+                        if (getOnKeyPressed() != null) {
+                            getOnKeyPressed().handle(event);
+                        }
+                        List<Actor> myActors = getObjects(Actor.class);
+                        for (Actor anActor : myActors) {
+                            if (anActor.getOnKeyPressed() != null) {
+                                anActor.getOnKeyPressed().handle(event);
                             }
                         }
-
                     });
                 }
-
             }
-
         });
     }
 
@@ -92,7 +82,7 @@ public abstract class World extends Pane {
     public void add(Actor actor) {
         getChildren().add(actor);
     }
-    
+
     public void add(Image img, int x, int y) {
         ImageView imgView = new ImageView(img);
         imgView.setX(x);
@@ -116,5 +106,5 @@ public abstract class World extends Pane {
     }
 
     public abstract void act(long now);
-    
+
 }

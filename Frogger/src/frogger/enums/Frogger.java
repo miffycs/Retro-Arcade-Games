@@ -1,7 +1,7 @@
 package frogger.enums;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+//import javafx.scene.image.ImageView;
 
 public enum Frogger {
     
@@ -40,6 +40,11 @@ public enum Frogger {
         return this.img;
     }
     
+    /*
+     * Cannot be used by GameStage directly because
+     * even though Actor extends ImageView,
+     * Actor also contains necessary methods
+     */
 //    public ImageView getImgView(int imgIndex, int x, int y) {
 //        
 //        ImageView imgView = new ImageView();
