@@ -16,7 +16,6 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
-
 public class HowToPlay extends JFrame {
 
     private GroupLayout layout;
@@ -96,27 +95,27 @@ public class HowToPlay extends JFrame {
 
         layout.setHorizontalGroup(
                 layout.createParallelGroup(Alignment.CENTER)
-                        .addGap(600)
-                        .addComponent(title)
-                        .addComponent(desc)
-                        .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(back)
-                        .addComponent(controls)
+                .addGap(600)
+                .addComponent(title)
+                .addComponent(desc)
+                .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
+                .addComponent(back)
+                .addComponent(controls)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(Alignment.CENTER)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(30)
-                                .addComponent(title)
-                                .addGap(20)
-                                .addComponent(desc)
-                                .addGap(30)
-                                .addComponent(controls)
-                                .addGap(10)
-                                .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-                                .addGap(20)
-                                .addComponent(back)
-                                .addGap(30))
+                .addGroup(layout.createSequentialGroup()
+                        .addGap(30)
+                        .addComponent(title)
+                        .addGap(20)
+                        .addComponent(desc)
+                        .addGap(30)
+                        .addComponent(controls)
+                        .addGap(10)
+                        .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
+                        .addGap(20)
+                        .addComponent(back)
+                        .addGap(30))
         );
 
     }
