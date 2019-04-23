@@ -13,20 +13,16 @@ public class GameStage extends World {
     public void act(long now) {}
 
     public GameStage() {
-        // debug: when click on World, show X and Y values
-        
-        this.setOnMouseClicked((MouseEvent e) -> {
-            System.out.println("[" + e.getX() + ", " + e.getY() + "]");
-        });
-        
-        /* // same as above lambda
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
+        this.debugMode(true);
+    }
+    
+    // debug: when click on World, show X and Y coordinates
+    private void debugMode(boolean debugOn) {
+        if (debugOn) {
+            this.setOnMouseClicked((MouseEvent e) -> {
                 System.out.println("[" + e.getX() + ", " + e.getY() + "]");
-            }
-        });
-        */
+            });
+        }
     }
 
     public void playMusic() {
