@@ -4,10 +4,7 @@ import frogger.enums.Img;
 
 public class End extends Actor {
 
-    private boolean occupied = false;
-
-    @Override
-    public void act(long now) {}
+    private boolean isOccupied = false;
 
     public End(int x, int y) {
         setImage(Img.END_SLOT.img());
@@ -17,11 +14,14 @@ public class End extends Actor {
 
     public void addFrog() {
         setImage(Img.END_FROG.img());
-        this.occupied = true;
+        this.isOccupied = true;
     }
 
     public boolean isOccupied() {
-        return this.occupied;
+        return this.isOccupied;
     }
+    
+    @Override
+    public void act(long now) {}
 
 }

@@ -9,9 +9,6 @@ public class GameStage extends World {
 
     private MediaPlayer mediaPlayer;
 
-    @Override
-    public void act(long now) {}
-
     public GameStage() {
         this.debugMode(true);
     }
@@ -37,4 +34,7 @@ public class GameStage extends World {
         mediaPlayer.stop();
     }
 
+    @Override
+    public void act(long now) {}
+    
 }
