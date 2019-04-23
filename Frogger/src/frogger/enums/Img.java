@@ -1,7 +1,7 @@
 package frogger.enums;
 
 import javafx.scene.image.Image;
-//import javafx.scene.image.ImageView;
+import javafx.scene.image.ImageView;
 
 /*
  * Stores imgPath, imgSize, x/y coordinates
@@ -36,20 +36,20 @@ public enum Img {
         return this.img;
     }
     
-//    public ImageView getImgView(int imgIndex, int x, int y){
-//        
-//        ImageView imgView = new ImageView();
-//        this.img = this.img(imgIndex);
-//        
-//        this.x = x;
-//        this.y = y;
-//        
-//        imgView.setImage(this.img);
-//        imgView.setX(x);
-//        imgView.setY(y);
-//        
-//        imgView.setPickOnBounds(true);
-//        
-//        return imgView;
-//    }
+    public ImageView getImgView(int imgIndex, int x, int y){
+        
+        ImageView imgView = new ImageView();
+        this.img = this.img(imgIndex);
+        
+        this.x = x;
+        this.y = y;
+        
+        imgView.setImage(this.img);
+        imgView.setX(x);
+        imgView.setY(y);
+        
+        imgView.setPickOnBounds(true);
+        
+        return imgView;
+    }
 }

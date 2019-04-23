@@ -89,6 +89,7 @@ public abstract class World extends Pane {
         getChildren().remove(actor);
     }
 
+    @SuppressWarnings("unchecked") 
     public <A extends Actor> List<A> getObjects(Class<A> cls) {
         ArrayList<A> someArray = new ArrayList<A>();
         for (Node n : getChildren()) {

@@ -52,7 +52,7 @@ public class Main extends Application {
         primaryStage.show();
         
         // ask player for name
-        this.askPlayerName();
+//        this.askPlayerName();
     }
     
     // asks player for their name to show when game ends
