@@ -3,6 +3,10 @@ package frogger.enums;
 import javafx.scene.image.Image;
 //import javafx.scene.image.ImageView;
 
+/*
+ * Stores imgPath, imgSize, x/y coordinates
+ * Methods for accessing Image and ImageView
+ */
 public enum Img {
     
     BACKGROUND("file:src/frogger/img/scene/background.png", 800),

@@ -3,6 +3,10 @@ package frogger.enums;
 import javafx.scene.image.Image;
 //import javafx.scene.image.ImageView;
 
+/*
+ * Stores imgPath, imgSize, x/y coordinates
+ * Methods for accessing Image and ImageView
+ */
 public enum Obstacle {
     
     CAR_LEFT("file:src/frogger/img/obstacles/car/car_left.png", 50),
