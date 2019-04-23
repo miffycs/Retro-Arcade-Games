@@ -6,19 +6,24 @@ import javafx.scene.input.KeyEvent;
 
 public class Frog extends Actor {
     
+    // Frog position / coordinates
     private final double moveX = 10.666666 * 2;
     private final double moveY = 13.333333 * 2;
+
+    // Frog states
     private boolean isJumping = false;
     private boolean isMovementDisabled = false;
     private boolean isDead_Land = false;
     private boolean isDead_Water = false;
     private int deathAnimation = 0;
     
+    // Frog score
     private int score = 0;
     private boolean isScoreChanged = false;
     private int numEndFrogs = 0;
     private int perfectRoundScore = 800;
     
+    // do the following every second
     @Override
     public void act(long now) {
         this.checkXYBounds();
@@ -26,6 +31,12 @@ public class Frog extends Actor {
         this.checkDeath(now);
     }
     
+    /* 
+     * Constructor:
+     *  - Sets up Frog to original state
+     *  - Listen for KeyEvent (WASD / UpLfDnRt)
+     *  - Implement "jump" animation using KeyEvent
+     */
     public Frog() {
         
         // set Frog to original state
@@ -131,7 +142,7 @@ public class Frog extends Actor {
                 }
             }
         });
-    } // constructor end
+    }
     
     // reset Frog to its original X/Y position
     private void resetOriginalXY() {
@@ -151,11 +162,12 @@ public class Frog extends Actor {
         }
     }
     
-    // check if Frog runs into any of the obstacles also in World
+    // check if Frog runs into any of the obstacles in the same World
     private void checkIntersections() {
-        // check Cars, Logs, Turtles
+        // check Cars/Trucks
         if (getIntersectingObjects(Car.class).size() >= 1) {
             isDead_Land = true;
+        // check Logs
         } else if (getIntersectingObjects(Log.class).size() >= 1 && !isMovementDisabled) {
             // move Frog on Log if at end of bound
             if (getIntersectingObjects(Log.class).get(0).isDirectionLeft()) {
@@ -163,6 +175,7 @@ public class Frog extends Actor {
             } else {
                 move(.75, 0);
             }
+        // check Turtles
         } else if (getIntersectingObjects(Turtle.class).size() >= 1 && !isMovementDisabled) {
             if (!getIntersectingObjects(Turtle.class).get(0).isSunk()) {
                 move(-1, 0);
@@ -170,12 +183,15 @@ public class Frog extends Actor {
                 // if Frog not on Log and not on Turtle that is floating
                 isDead_Water = true;
             }
+        // check End slots
         } else if (getIntersectingObjects(End.class).size() >= 1) {
+            // Frog went into an occupied slot
             if (getIntersectingObjects(End.class).get(0).isOccupied()) {
                 numEndFrogs--;
                 score -= 60;
 //                System.out.println("Dup--: " + this.score);
             }
+            // add new Frog to empty End slot
             score += 60;
 //            System.out.println("New Frog: " +this.score);
             isScoreChanged = true;
@@ -183,13 +199,16 @@ public class Frog extends Actor {
             getIntersectingObjects(End.class).get(0).addFrog();
             numEndFrogs++;
             this.resetOriginalXY();
+        // if Frog went past Y of End slots, but did not end up in a slot
+        // then Frog should drown instead of simply resetting
         } else if (getY() < 434) {
             isDead_Water = true;
         }
     }
     
-    // check if Frog has died
+    // check if Frog was marked for death due to another intersecting object
     private void checkDeath(long now) {
+        // execute DeathEvents according to Death location (LAND/WATER)
         if (isDead_Land) {
             onDeathEvent(now, Frogger.DEATH_LAND);
         } else if (isDead_Water) {
@@ -203,7 +222,7 @@ public class Frog extends Actor {
         // disable Frog movement
         this.isMovementDisabled = true;
         
-// check every time
+        // check every time
         if ((now) % 10 == 0) {
             deathAnimation++;
         }
