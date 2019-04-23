@@ -14,76 +14,112 @@ import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener {
 
+    /* 
+     * fall speed of the pieces
+     * (delay, action) delay set to 500, action set to “this”
+     * 500 is how slow the pieces fall
+     * timer is activated when the game starts
+     * timer stops when the game is paused by pressing “p”
+     * timer starts again when the game is un-paused by pressing “p”
+     * timer ends when the game ends
+     */
+    private Timer timer;
+    private Tetrominoes[] board;
+
+    // board dimensions
     private static final int BOARD_WIDTH = 10;
     private static final int BOARD_HEIGHT = 22;
-
-    private Timer timer; // for fall speed of the pieces
-
+    
+    // states of the game
     private boolean isFallingFinished = false;
     private boolean isStarted = false;
     private boolean isPaused = false;
-    private int numLinesCleared = 0;
 
+    // current piece
+    private Shape curPiece;
     private int curX = 0;
     private int curY = 0;
-    private Shape curPiece;
 
+    // score
+    private int numLinesCleared = 0;
     private JLabel statusBar;
 
-    private Tetrominoes[] board;
-
+    // constructor
     public Board() {
+        // new piece
         setFocusable(true);
         curPiece = new Shape();
+        
         // (delay, action) 500 = how fast the pieces fall
         timer = new Timer(500, this);
 
+        // add statusBar
         statusBar = new JLabel();
         statusBar.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
         statusBar = getStatusBar();
 
+        // new board
         board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
         clearBoard();
+        
+        // listen for KeyEvent
         addKeyListener(new TetrisKeyAdapter());
     }
 
+    // return statusBar
     public JLabel getStatusBar() {
         statusBar.setText("Score: " + String.valueOf(numLinesCleared) + "      (Press 'p' to pause)");
         return statusBar;
     }
 
+    // return width size of a square
     public int squareWidth() {
         return (int) getSize().getWidth() / BOARD_WIDTH;
     }
 
+    // return height size of a square
     public int squareHeight() {
         return (int) getSize().getHeight() / BOARD_HEIGHT;
     }
 
+    // return shape of the piece at given param x&y
     public Tetrominoes shapeAt(int x, int y) {
         return board[y * BOARD_WIDTH + x];
     }
 
+    // reset board to NoShape
     private void clearBoard() {
         for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; i++) {
             board[i] = Tetrominoes.NoShape;
         }
     }
 
+    /* 
+     * called when a piece has completely touched the bottom
+     * curPiece’s x&y coords are checked to see if it can go down another line
+     * if there is a full line to be removed, remove it
+     * when a piece is done falling, call newPiece()
+     */
     private void pieceDropped() {
         for (int i = 0; i < 4; i++) {
             int x = curX + curPiece.x(i);
             int y = curY - curPiece.y(i);
             board[y * BOARD_WIDTH + x] = curPiece.getShape();
         }
-
         removeFullLines();
-
         if (!isFallingFinished) {
             newPiece();
         }
     }
-
+    
+    /*
+     * called when a new piece does not exist on the board
+     * get a random shape from the set of 7 choices, or the available ones
+     * display the newPiece at the horizontal middle of the board
+     * display the newPiece at the top of the board
+     * check if this newPiece still have space to move
+     * if not then it means the board is full, and the game is ended
+     */
     public void newPiece() {
         curPiece.setRandomShape(); // set of 7, randomly
         curX = BOARD_WIDTH / 2 + 1;
@@ -97,20 +133,20 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-    // only drop piece down 1 line vertically
+    // move the piece one line down vertically
     private void oneLineDown() {
         if (!tryMove(curPiece, curX, curY - 1)) {
             pieceDropped();
         }
     }
 
-    @Override
     /*
      * Overriding the definition of actionPerformed to catch user input on keyboard.
      * If the time set in timer has gone by and no action from user has been caught,
         move the piece down a line.
      * If user action was caught, then the action can be performed up until the piece is done falling.
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
         if (isFallingFinished) {
             isFallingFinished = false;
@@ -145,7 +181,6 @@ public class Board extends JPanel implements ActionListener {
         super.paint(g);
         Dimension size = getSize();
         int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
-
         for (int i = 0; i < BOARD_HEIGHT; i++) {
             for (int j = 0; j < BOARD_WIDTH; ++j) {
                 Tetrominoes shape = shapeAt(j, BOARD_HEIGHT - i - 1);
@@ -155,7 +190,6 @@ public class Board extends JPanel implements ActionListener {
                 }
             }
         }
-
         if (curPiece.getShape() != Tetrominoes.NoShape) {
             for (int i = 0; i < 4; ++i) {
                 int x = curX + curPiece.x(i);
@@ -165,11 +199,11 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    // set starting values of Board
     public void start() {
         if (isPaused) {
             return;
         }
-
         isStarted = true;
         isFallingFinished = false;
         numLinesCleared = 0;
@@ -178,6 +212,7 @@ public class Board extends JPanel implements ActionListener {
         timer.start();
     }
 
+    // pause the game
     public void pause() {
         // if game has not started
         if (!isStarted) {
@@ -185,7 +220,6 @@ public class Board extends JPanel implements ActionListener {
         }
         // reverse
         isPaused = !isPaused;
-
         if (isPaused) {
             timer.stop();
             statusBar.setText("Paused. Score: " + String.valueOf(numLinesCleared) + "      (Press 'p' to un-pause)");
@@ -193,7 +227,6 @@ public class Board extends JPanel implements ActionListener {
             timer.start();
             statusBar = getStatusBar();
         }
-
         repaint(); // refresh display
     }
 
@@ -202,37 +235,31 @@ public class Board extends JPanel implements ActionListener {
         for (int i = 0; i < 4; ++i) {
             int x = newX + newPiece.x(i);
             int y = newY - newPiece.y(i);
-
             if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT) {
                 return false;
             }
-
             if (shapeAt(x, y) != Tetrominoes.NoShape) {
                 return false;
             }
         }
-
         curPiece = newPiece;
         curX = newX;
         curY = newY;
         repaint(); // refresh display
-
         return true;
     }
 
+    // when one horizontal line could be cleared
     private void removeFullLines() {
         int numFullLines = 0;
-
         for (int i = BOARD_HEIGHT - 1; i >= 0; --i) {
             boolean lineIsFull = true;
-
             for (int j = 0; j < BOARD_WIDTH; ++j) {
                 if (shapeAt(j, i) == Tetrominoes.NoShape) {
                     lineIsFull = false;
                     break;
                 }
             }
-
             if (lineIsFull) {
                 ++numFullLines;
 
@@ -243,7 +270,6 @@ public class Board extends JPanel implements ActionListener {
                 }
             }
         }
-
         if (numFullLines > 0) {
             numLinesCleared += numFullLines;
             statusBar.setText("Score: " + String.valueOf(numLinesCleared) + "      (Press 'p' to pause)");
@@ -253,18 +279,19 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-    // drop piece to bottom
+    /*
+     * drop piece to bottom
+     * as long as the piece has not reached the bottom,
+     * user can choose to move the piece all the way down as far as it could
+     */
     private void dropDown() {
         int newY = curY;
-
         while (newY > 0) {
             if (!tryMove(curPiece, curX, newY - 1)) {
                 break;
             }
-
             --newY;
         }
-
         pieceDropped();
     }
 
@@ -275,18 +302,16 @@ public class Board extends JPanel implements ActionListener {
             if (!isStarted || curPiece.getShape() == Tetrominoes.NoShape) {
                 return;
             }
-
             int keyCode = key.getKeyCode();
-
             if (keyCode == KeyEvent.VK_P) {
                 pause();
             }
-
             // wait for user to un-pause
             if (isPaused) {
                 return;
             }
-
+            
+            // controls using LEFT RIGHT DOWN UP
             switch (keyCode) {
                 case KeyEvent.VK_LEFT:
                     tryMove(curPiece, curX - 1, curY);
