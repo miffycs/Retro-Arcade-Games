@@ -10,14 +10,12 @@ public class Frog extends Actor {
     private final double moveY = 13.333333 * 2;
     private boolean isJumping = false;
     private boolean isMovementDisabled = false;
-    
     private boolean isDead_Land = false;
     private boolean isDead_Water = false;
     private int deathAnimation = 0;
     
     private int score = 0;
     private boolean isScoreChanged = false;
-    
     private int numEndFrogs = 0;
     private int perfectRoundScore = 800;
     
@@ -30,11 +28,15 @@ public class Frog extends Actor {
     
     public Frog() {
         
+        // set Frog to original state
         setImage(Frogger.UP.img());
         this.resetOriginalXY();
         
+        // listen for KeyEvent
         setOnKeyPressed((KeyEvent event) -> {
+            // if Frog can move
             if (!isMovementDisabled) {
+                // if Frog is jumping
                 if (isJumping) {
                     isJumping = false;
                     switch (event.getCode()) {
@@ -61,6 +63,7 @@ public class Frog extends Actor {
                         default:
                             break;
                     }
+                    // if Frog is not jumping
                 } else {
                     isJumping = true;
                     switch (event.getCode()) {
@@ -90,8 +93,11 @@ public class Frog extends Actor {
                 }
             }
         });
+        // if Key is released
         setOnKeyReleased((KeyEvent event) -> {
+            // if Frog can move
             if (!isMovementDisabled) {
+                // set to not jumping & tally score if moved forward
                 isJumping = false;
                 switch (event.getCode()) {
                     case W:
@@ -127,12 +133,13 @@ public class Frog extends Actor {
         });
     } // constructor end
     
-    
+    // reset Frog to its original X/Y position
     private void resetOriginalXY() {
         setX(300);
         setY(679.8 + moveY);
     }
-        
+    
+    // check X/Y bounds that Frog is not going outside of Application frame
     private void checkXYBounds() {
         if (getX() < 0) {
             move(moveY * 2, 0);
@@ -144,6 +151,7 @@ public class Frog extends Actor {
         }
     }
     
+    // check if Frog runs into any of the obstacles also in World
     private void checkIntersections() {
         // check Cars, Logs, Turtles
         if (getIntersectingObjects(Car.class).size() >= 1) {
@@ -180,6 +188,7 @@ public class Frog extends Actor {
         }
     }
     
+    // check if Frog has died
     private void checkDeath(long now) {
         if (isDead_Land) {
             onDeathEvent(now, Frogger.DEATH_LAND);
@@ -188,14 +197,17 @@ public class Frog extends Actor {
         }
     }
     
+    // show death animation for DEATH_LAND or DEATH_WATER
     private void onDeathEvent(long now, Frogger death) {
         
+        // disable Frog movement
         this.isMovementDisabled = true;
-
-        // check every time
+        
+// check every time
         if ((now) % 10 == 0) {
             deathAnimation++;
         }
+        
         // death animation using switch, last step reverts to starting point
         switch (deathAnimation) {
             case 1:
@@ -228,6 +240,8 @@ public class Frog extends Actor {
         }
     }
     
+    // called by Main Application, if score has changed,
+    // Main will know to update score images in Main
     public boolean scoreChanged() {
         if (isScoreChanged) {
             isScoreChanged = false;
@@ -236,11 +250,13 @@ public class Frog extends Actor {
         return false;
     }
 
+    // returns the current overall score
     public int getScore() {
 //        System.out.println("Returned: " + this.score);
         return this.score;
     }
     
+    // return game status of if finished or not
     public boolean isGameFinished() {
         return numEndFrogs == 5;
     }
