@@ -40,6 +40,10 @@ javafx.scene.image.Image
 java.lang.Enum
 frogger.enums.Obstacle
 [Lfrogger.enums.Obstacle;
+||:frogger.Car
+frogger.Actor
+frogger.enums.Obstacle
+frogger.Car
 ||:frogger.Main
 java.lang.invoke.MethodHandles
 frogger.Log
@@ -61,10 +65,6 @@ javafx.stage.Stage
 javafx.scene.Scene
 java.lang.String
 frogger.End
-||:frogger.Car
-frogger.Actor
-frogger.enums.Obstacle
-frogger.Car
 ||:frogger.Actor
 java.util.Iterator
 java.util.ArrayList
